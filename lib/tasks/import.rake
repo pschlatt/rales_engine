@@ -8,6 +8,7 @@ task :import => [:environment] do
   file_customer = "db/customers.csv"
   file_invoice = "db/invoices.csv"
   file_transaction = "db/transactions.csv"
+  file_invoice_item = "db/invoice_items.csv"
 
   CSV.foreach(file_merchant, :headers => true) do |row|
     Merchant.create(
@@ -58,6 +59,18 @@ task :import => [:environment] do
       :credit_card_number => row[2],
       :credit_card_expiration_date => row[3],
       :result => row[4],
+      :created_at => row[5],
+      :updated_at => row[6]
+    )
+  end
+
+  CSV.foreach(file_invoice_item, :headers => true) do |row|
+    InvoiceItem.create(
+      :id => row[0],
+      :item_id => row[1],
+      :invoice_id => row[2],
+      :quantity => row[3],
+      :unit_price => row[4],
       :created_at => row[5],
       :updated_at => row[6]
     )
